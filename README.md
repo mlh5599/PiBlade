@@ -22,9 +22,8 @@ sudo systemctl enable pigpiod
 sudo systemctl start pigpiod
 
 ## Building
-To compile:
-gcc -Wall -pthread -o actledPi actledPi.c
-gcc -Wall -pthread -o netledPi netledPi.c -lpigpiod_if2 -lrt
+gcc -Wall -pthread -o actledPi actledPi.c\
+gcc -Wall -pthread -o netledPi netledPi.c -lpigpiod_if2 -lrt\
 gcc -Wall -pthread -o hddledPi hddledPi.c -lpigpiod_if2 -lrt
 
 ## Installation
