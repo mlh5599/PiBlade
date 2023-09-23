@@ -61,12 +61,12 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include <wiringPi.h>
+#include <pigpiod_if2.h>
 
 
 static unsigned int o_refresh = 20; /* milliseconds */
 static unsigned int o_gpiopin = 11; /* wiringPi numbering scheme */
-static int o_detach = 0;
+static int o_detach = 0, pi;
 
 static volatile sig_atomic_t running = 1;
 static char *line = NULL;
@@ -133,9 +133,9 @@ void led(int on) {
                 return;
 
         if (on) {
-                digitalWrite (o_gpiopin, HIGH);
+                gpio_write (pi, o_gpiopin, PI_HIGH);
         } else {
-                digitalWrite (o_gpiopin, LOW);
+                gpio_write (pi, o_gpiopin, PI_LOW);
         }
 
         current = on;
@@ -192,8 +192,14 @@ int main(int argc, char **argv) {
         delay.tv_sec = o_refresh / 1000;
         delay.tv_nsec = 1000000 * (o_refresh % 1000);
 
-        wiringPiSetup () ;
-        pinMode (o_gpiopin, OUTPUT) ;
+        pi = pigpio_start(NULL, NULL);
+        if(pi < 0)
+        {
+                perror("Could not initialize pigpio, is the daemon running?");
+                goto out;
+        }
+        
+        set_mode(pi, o_gpiopin, PI_OUTPUT);
 
 
         /* Open the netdevices file */
@@ -204,7 +210,7 @@ int main(int argc, char **argv) {
         }
 
         /* Ensure the LED is off */
-        led(LOW);
+        gpio_write(pi, o_gpiopin, PI_LOW);
 
         /* Save the current I/O stat values */
         if (activity(netdevices) < 0)
@@ -248,11 +254,12 @@ int main(int argc, char **argv) {
         }
 
         /* Ensure the LED is off */
-        led(LOW);
+        gpio_write(pi, o_gpiopin, PI_LOW);
 
         status = EXIT_SUCCESS;
 
 out:
+        if (pi > -1) pigpio_stop(pi);
         if (line) free(line);
         if (netdevices) fclose(netdevices);
         return status;
