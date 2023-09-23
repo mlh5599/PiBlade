@@ -27,15 +27,14 @@
  *
  * A network activity light for the Raspberry Pi, using an LED connected to a GPIO pin.
  * Based on hddled.c - http://members.optusnet.com.au/foonly/whirlpool/code/hddled.c -
- * This program uses the WiringPi library by Gordon Henderson - http://wiringpi.com/ - Thanks, Gordon!
- * 
+ 
  *
  * To compile:
- *   gcc -Wall -O3 -o netledPi netledPi.c -lwiringPi
+ *   gcc -Wall -pthread -o netledPi netledPi.c -lpigpiod_if2 -lrt
  *
  * Options:
  * -d, --detach               Detach from terminal (become a daemon)
- * -p, --pin=VALUE            GPIO pin (using wiringPi numbering scheme) where LED is connected (default: 11)
+ * -p, --pin=VALUE            GPIO pin (using broadcom numbering scheme) where LED is connected (default: 25)
  * -r, --refresh=VALUE        Refresh interval (default: 20 ms)
  *
  * GPIO pin ----|>|----[330]----+
@@ -43,9 +42,6 @@
  *                             ===
  *                            Ground
  *
- * Default LED Pin - wiringPi pin 11 is BCM_GPIO 7, physical pin 26 on the Pi's P1 header.
- * Note: This pin is also used for the SPI interface. If you have SPI add-ons connected,
- * you'll have to use the -p option to change it to another, unused pin.
  */
 
 
@@ -65,7 +61,7 @@
 
 
 static unsigned int o_refresh = 20; /* milliseconds */
-static unsigned int o_gpiopin = 11; /* wiringPi numbering scheme */
+static unsigned int o_gpiopin = 25; /* broadcom numbering scheme */
 static int o_detach = 0, pi;
 
 static volatile sig_atomic_t running = 1;
@@ -171,7 +167,7 @@ error_t parse_options(int key, char *arg, struct argp_state *state) {
 int main(int argc, char **argv) {
         struct argp_option options[] = {
                 { "detach",  'd',      NULL, 0, "Detach from terminal" },
-                { "pin",     'p',   "VALUE", 0, "GPIO pin where LED is connected (default: wiringPi pin 11, physical pin 25 on the P1 header)" },
+                { "pin",     'p',   "VALUE", 0, "GPIO pin where LED is connected (default: broadcom pin 23)" },
                 { "refresh", 'r',   "VALUE", 0, "Refresh interval (default: 20 ms)" },
                 { 0 },
         };

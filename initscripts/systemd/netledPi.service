@@ -1,10 +1,12 @@
 [Unit]
 Description=netledPi network activity indicator
-After=network.target
+Requires=pigpiod.service
+After=network.target pigpiod.service
+
 
 [Service]
 Type=forking
-ExecStart=/usr/local/bin/netledPi -d
+ExecStart=/usr/local/bin/netledPi -p 23 -d
 
 [Install]
 WantedBy=default.target
