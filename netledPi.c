@@ -195,7 +195,7 @@ int main(int argc, char **argv)
         struct argp_option options[] = {
             {"detach", 'd', NULL, 0, "Detach from terminal"},
             {"pin", 'p', "VALUE", 0, "GPIO pin where LED is connected (default: broadcom pin 23)"},
-            {"intensity", 'i', "VALUE", 0, "LED intensity (0-255, default: 255)"}
+            {"intensity", 'i', "VALUE", 0, "LED intensity (0-255, default: 255)"},
             {"refresh", 'r', "VALUE", 0, "Refresh interval (default: 20 ms)"},
             {0},
         };
