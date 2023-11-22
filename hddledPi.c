@@ -34,6 +34,7 @@
  * Options:
  * -d, --detach               Detach from terminal (become a daemon)
  * -p, --pin=VALUE            GPIO pin (using broadcom numbering scheme) where LED is connected (default: 23) 
+ * -i, --intensity=VALUE      LED intensity (0-255, default: 255)
  * -r, --refresh=VALUE        Refresh interval (default: 20 ms)
  *
  * GPIO pin ----|>|----[330]----+
@@ -60,6 +61,7 @@
 
 static unsigned int o_refresh = 20; /* milliseconds */
 static unsigned int o_gpiopin = 25; /* broadcom numbering scheme */
+static unsigned int o_intensity = 255; /* 0-255 */
 static int o_detach = 0, pi;
 
 static volatile sig_atomic_t running = 1;
@@ -119,7 +121,14 @@ void led(int on) {
                 return;
 
         if (on) {
-                gpio_write (pi, o_gpiopin, PI_HIGH);
+                if (o_intensity < 255)
+                {
+                        set_PWM_dutycycle(pi, o_gpiopin, o_intensity);
+                }
+                else if (o_intensity == 255)
+                {
+                        gpio_write(pi, o_gpiopin, PI_HIGH);
+                }
         } else {
                 gpio_write (pi, o_gpiopin, PI_LOW);
         }
@@ -150,6 +159,12 @@ error_t parse_options(int key, char *arg, struct argp_state *state) {
                         argp_failure(state, EXIT_FAILURE, 0,
                                 "pin number must be between 0 and 29");
                 break;
+        case 'i':
+                o_intensity = strtol(arg, NULL, 10);
+                if ((o_intensity < 0) || (o_intensity > 255))
+                        argp_failure(state, EXIT_FAILURE, 0,
+                                "intensity must be between 0 and 255");
+                break;
         }
         return 0;
 }
@@ -158,6 +173,7 @@ int main(int argc, char **argv) {
         struct argp_option options[] = {
                 { "detach",  'd',      NULL, 0, "Detach from terminal" },
                 { "pin",     'p',   "VALUE", 0, "GPIO pin where LED is connected (default: broadcom pin 25)" },
+                { "intensity", 'i', "VALUE", 0, "LED intensity (0-255, default: 255)",}
                 { "refresh", 'r',   "VALUE", 0, "Refresh interval (default: 20 ms)" },
                 { 0 },
         };
