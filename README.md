@@ -34,4 +34,4 @@ gcc -Wall -pthread -o hddledPi hddledPi.c -lpigpiod_if2 -lrt
 ```
 
 ## Installation
-Copy the compiled program files to /usr/local/bin and follow the instructions in the initscripts [README](initscripts/README) to run as a daemon.
+Copy the compiled program files to /usr/local/bin and follow the instructions in the initscripts [README](initscripts/README.md) to run as a daemon.
