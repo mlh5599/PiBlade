@@ -14,18 +14,24 @@ actledPi blinks the Pi's ACT led on all mass storage I/O, i.e. not only the SD c
 ## Prerequisites
 This application uses pigpiod instead of WiringPi for GPIO manipulation. 
 
-To install the application\
-sudo apt-get update\
+To install the application
+```
+sudo apt-get update
 sudo apt-get install pigpiod
+```
 
-Enable and start the service:\
-sudo systemctl enable pigpiod\
+Enable and start the service:
+```
+sudo systemctl enable pigpiod
 sudo systemctl start pigpiod
+```
 
 ## Building
-gcc -Wall -pthread -o actledPi actledPi.c\
-gcc -Wall -pthread -o netledPi netledPi.c -lpigpiod_if2 -lrt\
+```
+gcc -Wall -pthread -o actledPi actledPi.c
+gcc -Wall -pthread -o netledPi netledPi.c -lpigpiod_if2 -lrt
 gcc -Wall -pthread -o hddledPi hddledPi.c -lpigpiod_if2 -lrt
+```
 
 ## Installation
 Copy the compiled program files to /usr/local/bin and follow the instructions in the initscripts [README](initscripts/README) to run as a daemon.
