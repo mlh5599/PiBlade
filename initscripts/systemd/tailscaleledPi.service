@@ -1,0 +1,13 @@
+[Unit]
+Description=tailscaleledPi network activity indicator
+Requires=pigpiod.service
+After=network.target pigpiod.service
+
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/tailscaleledPi.sh 8 >/dev/null 2>&1 < /dev/null &
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
