@@ -1,0 +1,23 @@
+%TF.GenerationSoftware,KiCad,Pcbnew,8.0.6*%
+%TF.CreationDate,2024-10-30T20:06:30-05:00*%
+%TF.ProjectId,PiLEDLights,50694c45-444c-4696-9768-74732e6b6963,rev?*%
+%TF.SameCoordinates,Original*%
+%TF.FileFunction,Profile,NP*%
+%FSLAX46Y46*%
+G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
+G04 Created by KiCad (PCBNEW 8.0.6) date 2024-10-30 20:06:30*
+%MOMM*%
+%LPD*%
+G01*
+G04 APERTURE LIST*
+%TA.AperFunction,Profile*%
+%ADD10C,0.050000*%
+%TD*%
+G04 APERTURE END LIST*
+D10*
+X115400000Y-89400000D02*
+X132700000Y-89400000D01*
+X132700000Y-99000000D01*
+X115400000Y-99000000D01*
+X115400000Y-89400000D01*
+M02*
